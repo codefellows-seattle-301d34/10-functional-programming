@@ -1,0 +1,31 @@
+{
+  "name": "lab-10-kilovolt",
+  "version": "1.0.0",
+  "description": "As we now complete our MVC conversation, we can refactor our app to use good MVC separation of concerns.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Amy Cohen",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "fs": "0.0.1-security",
+    "pg": "^6.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmyCohen/10-functional-programming.git"
+  },
+  "keywords": [
+    "npm",
+    "node",
+    "express",
+    "postgres"
+  ],
+  "bugs": {
+    "url": "https://github.com/AmyCohen/10-functional-programming/issues"
+  },
+  "homepage": "https://github.com/AmyCohen/10-functional-programming#readme"
+}
