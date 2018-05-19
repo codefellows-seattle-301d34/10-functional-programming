@@ -134,8 +134,9 @@ articleView.initIndexPage = () => {
 articleView.initAdminPage = () => {
   
   // REVIEW: We use .forEach() here because we are relying on the side-effects of the callback function: appending to the DOM. The callback is not required to return anything.
-  Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(template(stat)));
-
+  let adminTemplate = Handlebars.compile($('#admin-template').text());
+  console.log(Article.numWordsByAuthor());
+  Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(adminTemplate(stat)));
   // REVIEW: Simply write the correct values to the page:
   $('#blog-stats .articles').text(Article.all.length);
   $('#blog-stats .words').text(Article.numWordsAll());
