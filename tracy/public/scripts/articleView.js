@@ -1,8 +1,9 @@
 'use strict';
+
 var app = app || {};
 
-// var articleView = (function() {
 (function(module){
+
 module.articleView = {};
 
 module.articleView.populateFilters = () => {
@@ -143,5 +144,4 @@ module.articleView.initAdminPage = () => {
   $('#blog-stats .words').text(module.Article.numWordsAll());
 };
 
-// return articleView;
 })(app);

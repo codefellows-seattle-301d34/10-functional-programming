@@ -1,9 +1,9 @@
 'use strict';
-var  app = app || {};
-// var Article = Article || {};
 
-// var Article = (function() {
+var  app = app || {};
+
 (function(module) {
+
 module.Article = {};
 
 module.Article = function(rawDataObj) {
@@ -23,7 +23,7 @@ module.Article.prototype.toHtml = function() {
   return template(this);
 };
 
-// Article.loadAll = articleData => {
+// Private function loadAll
 let loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)));
 
@@ -33,7 +33,6 @@ let loadAll = articleData => {
 module.Article.fetchAll = callback => {
   $.get('/articles')
     .then(results => {
-      // Article.loadAll(results);
       loadAll(results);
       callback();
     })
@@ -113,6 +112,4 @@ module.Article.prototype.updateRecord = function(callback) {
     .then(callback);
 };
 
-// return Article;
-// module.Article = Article;
 })(app);
