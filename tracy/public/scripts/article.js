@@ -49,14 +49,15 @@ Article.allAuthors = () => {
     },[]);
 };
 
-// Article.numWordsByAuthor = () => {
-//   return Article.allAuthors().map(author => 
-//     return {
-//       name:
-//       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-//       numWords:   
-//     })
-// };
+Article.numWordsByAuthor = () => {
+  return Article.allAuthors().map(author => {
+    return {name: author,
+      numWords: Article.all
+        .filter(a => a.author === author )
+        .map(o => o.body.split(' ').length)
+        .reduce((a, c) => a + c, 0)
+    }})
+};
 
 Article.truncateTable = callback => {
   $.ajax({
