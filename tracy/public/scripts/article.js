@@ -59,7 +59,10 @@ Article.numWordsByAuthor = () => {
       numWords: Article.all
         .filter(a => a.author === author )
         .map(o => o.body.split(' ').length)
-        .reduce((a, c) => a + c, 0)
+        .reduce((a, c) => a + c, 0),
+      numArticles: Article.all
+        .filter(a => a.author === author)
+        .length
     }})
 };
 
