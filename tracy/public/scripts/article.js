@@ -35,14 +35,19 @@ Article.fetchAll = callback => {
 
 // Hint: What property of an individual instance contains the main text of the article?
 Article.numWordsAll = () => {
-  return Article.all.map().reduce()
+  return Article.all.map(o => o.body.split(' ').length).reduce((a, c) => a + c, 0);
 };
 
 // Hint: Make sure to return an array and avoid duplicates.
 Article.allAuthors = () => {
-  return Article.all.map().reduce();
+  return Article.all.map(o => o.author)
+    .reduce((acc, curr) => {
+      if (!acc.includes(curr)) {
+        acc.push(curr);
+      }
+      return acc
+    },[]);
 };
-
 
 // Article.numWordsByAuthor = () => {
 //   return Article.allAuthors().map(author => 
