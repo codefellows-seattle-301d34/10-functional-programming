@@ -1,19 +1,19 @@
 'use strict';
-// var  = app || {};
+var  app = app || {};
 // var Article = Article || {};
 
-var Article = (function() {
+// var Article = (function() {
+(function(module) {
+module.Article = {};
 
-// let allArticles = [];
-
-Article = function(rawDataObj) {
+module.Article = function(rawDataObj) {
   // REVIEW: In Lab 8, we explored a lot of new functionality going on here. Let's re-examine the concept of context. Normally, "this" inside of a constructor function refers to the newly instantiated object. However, in the function we're passing to forEach, "this" would normally refer to "undefined" in strict mode. As a result, we had to pass a second argument to forEach to make sure our "this" was still referring to our instantiated object. One of the primary purposes of lexical arrow functions, besides cleaning up syntax to use fewer lines of code, is to also preserve context. That means that when you declare a function using lexical arrows, "this" inside the function will still be the same "this" as it was outside the function. As a result, we no longer have to pass in the optional "this" argument to forEach!
   Object.keys(rawDataObj).forEach(key => this[key] = rawDataObj[key]);
 }
 
-Article.all = [];
+module.Article.all = [];
 
-Article.prototype.toHtml = function() {
+module.Article.prototype.toHtml = function() {
   var template = Handlebars.compile($('#article-template').text());
 
   this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
@@ -23,28 +23,30 @@ Article.prototype.toHtml = function() {
   return template(this);
 };
 
-Article.loadAll = articleData => {
+// Article.loadAll = articleData => {
+let loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)));
 
-  Article.all = articleData.map(obj => new Article(obj));
+  module.Article.all = articleData.map(obj => new module.Article(obj));
 };
 
-Article.fetchAll = callback => {
+module.Article.fetchAll = callback => {
   $.get('/articles')
     .then(results => {
-      Article.loadAll(results);
+      // Article.loadAll(results);
+      loadAll(results);
       callback();
     })
 };
 
 // Hint: What property of an individual instance contains the main text of the article?
-Article.numWordsAll = () => {
-  return Article.all.map(o => o.body.split(' ').length).reduce((a, c) => a + c, 0);
+module.Article.numWordsAll = () => {
+  return module.Article.all.map(o => o.body.split(' ').length).reduce((a, c) => a + c, 0);
 };
 
 // Hint: Make sure to return an array and avoid duplicates.
-Article.allAuthors = () => {
-  return Article.all.map(o => o.author)
+module.Article.allAuthors = () => {
+  return module.Article.all.map(o => o.author)
     .reduce((acc, curr) => {
       if (!acc.includes(curr)) {
         acc.push(curr);
@@ -53,20 +55,20 @@ Article.allAuthors = () => {
     },[]);
 };
 
-Article.numWordsByAuthor = () => {
-  return Article.allAuthors().map(author => {
+module.Article.numWordsByAuthor = () => {
+  return module.Article.allAuthors().map(author => {
     return {name: author,
-      numWords: Article.all
+      numWords: module.Article.all
         .filter(a => a.author === author )
         .map(o => o.body.split(' ').length)
         .reduce((a, c) => a + c, 0),
-      numArticles: Article.all
+      numArticles: module.Article.all
         .filter(a => a.author === author)
         .length
     }})
 };
 
-Article.truncateTable = callback => {
+module.Article.truncateTable = callback => {
   $.ajax({
     url: '/articles',
     method: 'DELETE',
@@ -76,7 +78,7 @@ Article.truncateTable = callback => {
     .then(callback);
 };
 
-Article.prototype.insertRecord = function(callback) {
+module.Article.prototype.insertRecord = function(callback) {
   // REVIEW: Why can't we use an arrow function here for .insertRecord()?
   // COMMENT: because of the use of contextual this.
   $.post('/articles', {author: this.author, authorUrl: this.authorUrl, body: this.body, category: this.category, publishedOn: this.publishedOn, title: this.title})
@@ -84,7 +86,7 @@ Article.prototype.insertRecord = function(callback) {
     .then(callback);
 };
 
-Article.prototype.deleteRecord = function(callback) {
+module.Article.prototype.deleteRecord = function(callback) {
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'DELETE'
@@ -93,7 +95,7 @@ Article.prototype.deleteRecord = function(callback) {
     .then(callback);
 };
 
-Article.prototype.updateRecord = function(callback) {
+module.Article.prototype.updateRecord = function(callback) {
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'PUT',
@@ -111,5 +113,6 @@ Article.prototype.updateRecord = function(callback) {
     .then(callback);
 };
 
-return Article;
-})();
+// return Article;
+// module.Article = Article;
+})(app);
