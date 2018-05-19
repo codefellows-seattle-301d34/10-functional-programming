@@ -31,6 +31,7 @@ node.js used as the server, with Express and PostgreSQL.
 
 ### Credits and Collaporations
 
+- This post on stack overflow was helpful: https://stackoverflow.com/questions/32494821/how-to-create-javascript-object-using-iife
 - jQuery Library
 - Code Fellows (.erslint)
 - MIT license
