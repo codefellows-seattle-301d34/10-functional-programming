@@ -7,8 +7,6 @@ var app = app || {};
     Object.keys(rawDataObj).forEach(key => this[key] = rawDataObj[key]);
   }
 
-  module.Article.all = [];
-
   module.Article.prototype.toHtml = function () {
     var template = Handlebars.compile($('#article-template').text());
 
@@ -20,10 +18,7 @@ var app = app || {};
   };
 
   module.Article.loadAll = articleData => {
-    articleData.sort((a, b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
-
-    // OLD forEach():
-    articleData.forEach(articleObject => module.Article.all.push(new module.Article(articleObject)));
+    module.Article.all = articleData.sort((a, b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn))).map(article => new module.Article(article));
   };
 
   module.Article.fetchAll = callback => {
