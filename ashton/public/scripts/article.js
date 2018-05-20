@@ -44,19 +44,16 @@ var app = app || {};
     return module.Article.all.map(a => a.author).filter((article, i, w) => i === w.indexOf(article));
   };
 
-
-  module.Article.numWordsByAuthor = () => [
-    {name: 'Ashton', numWords: '10'}
-  ];
-
-  // module.Article.numWordsByAuthor = () => {
-  //   return Article.allAuthors().map(author =>
-  //     return {
-  //       name: author.name,
-  //       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-  //       numWords: app.Article.all.filter(article => article.author = this.author).map(article => article.body.split('').length).reduce((acc, cur) => acc + cur);
-  //     });
-  // };
+  module.Article.numWordsByAuthor = () => {
+    return module.Article.allAuthors().map(author => {
+      let numWords = module.Article.all.filter(article => article.author === author).map(article => article.body.split(' ').length).reduce((acc, cur) => acc + cur)
+      return {
+        name: author,
+        numWords: numWords,
+        weNeedThatS: numWords === 1 ? '' : 's',
+      };
+    });
+  };
 
   module.Article.truncateTable = callback => {
     $.ajax({
