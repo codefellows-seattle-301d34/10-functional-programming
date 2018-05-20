@@ -45,6 +45,10 @@ var app = app || {};
   };
 
 
+  module.Article.numWordsByAuthor = () => [
+    {name: 'Ashton', numWords: '10'}
+  ];
+
   // module.Article.numWordsByAuthor = () => {
   //   return Article.allAuthors().map(author =>
   //     return {
