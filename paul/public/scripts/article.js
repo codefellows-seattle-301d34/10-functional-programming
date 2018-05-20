@@ -20,7 +20,7 @@ var app = app || {};
   };
 
   Article.loadAll = articleData => {
-    articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
+    articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)));
 
     // OLD forEach():
     // articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
@@ -38,7 +38,7 @@ var app = app || {};
 
   // Hint: What property of an individual instance contains the main text of the article?
   Article.numWordsAll = () => {
-    return Article.all.map().reduce()
+    return Article.all.map((obj) => obj.body.length).reduce((accum, currentVal) => accum + currentVal);
   };
 
   // Hint: Make sure to return an array and avoid duplicates.
