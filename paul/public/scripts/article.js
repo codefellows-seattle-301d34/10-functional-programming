@@ -20,10 +20,12 @@ var app = app || {};
   };
 
   Article.loadAll = articleData => {
-    // articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
+    articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
     // OLD forEach():
-    articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
+    // articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
+
+    Article.all = articleData.map((articleObject) => new Article(articleObject));
   };
 
   Article.fetchAll = callback => {
