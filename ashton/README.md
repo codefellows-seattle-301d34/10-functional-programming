@@ -1,7 +1,7 @@
 # Project Name
 Kilovole Mock Blog
 
-**Author**: Karen Lai, Ashton Ellis
+**Author**: Ashton Ellis
 **Version**: 1.0.0 
 
 ## Overview
@@ -23,6 +23,7 @@ Just download the source code and enjoy.
 * handlebars.js
 
 ## Change Log
+- May 20, 2018 12:22 AM - Enclosed each script in an IFFE, and added admin page functionality.
 
 ## Credits and Collaborations
 * Oscar Otero - [JQuery Quick API Reference](https://oscarotero.com/jquery/)
