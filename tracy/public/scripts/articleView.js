@@ -36,6 +36,7 @@ articleView.initAdminPage = () => {
   let adminTemplate = Handlebars.compile($('#admin-template').text());
   module.Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(adminTemplate(stat)));
   // REVIEW: Simply write the correct values to the page:
+  $('#blog-stats .authors').text(module.Article.allAuthors().length);
   $('#blog-stats .articles').text(module.Article.all.length);
   $('#blog-stats .words').text(module.Article.numWordsAll());
 };

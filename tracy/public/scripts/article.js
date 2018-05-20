@@ -59,8 +59,9 @@ Article.prototype.updateRecord = function(callback) {
     .then(callback);
 };
 
+
 Article.numWordsAll = () => {
-  return Article.all.map(o => o.body.split(' ').length).reduce((a, c) => a + c, 0);
+  return Article.all.map(o => o.body.split(' ').length).reduce(sumElements, 0);
 };
 
 Article.allAuthors = () => {
@@ -79,7 +80,7 @@ Article.numWordsByAuthor = () => {
       numWords: Article.all
         .filter(a => a.author === author )
         .map(o => o.body.split(' ').length)
-        .reduce((a, c) => a + c, 0),
+        .reduce(sumElements, 0),
       numArticles: Article.all
         .filter(a => a.author === author)
         .length
@@ -112,6 +113,8 @@ Article.fetchAll = callback => {
 };
 
 // PRIVATE FUNCTIONS
+
+let sumElements = (a, c) => a + c;
 
 let loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)));
