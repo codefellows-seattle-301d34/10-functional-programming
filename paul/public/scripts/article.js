@@ -38,7 +38,7 @@ var app = app || {};
 
   // Hint: What property of an individual instance contains the main text of the article?
   Article.numWordsAll = () => {
-    return Article.all.map((obj) => obj.body.length).reduce((accum, currentVal) => accum + currentVal);
+    return Article.all.map(obj => obj.body.split(/[// ]+/).length).reduce((accum, currentVal) => accum + currentVal);
   };
 
   // Hint: Make sure to return an array and avoid duplicates.
