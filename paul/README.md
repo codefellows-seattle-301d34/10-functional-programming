@@ -30,6 +30,8 @@ This application is a blog, which communicates with a local server via Node.js a
 ## Change Log
 05-20-2018 12:22pm - Initial repo setup.
 
+05-20-2018 12:46pm - Connection made between server and database.
+
 ## Credits and Collaborations
 
 * Oscar Otero - [JQuery Quick API Reference](https://oscarotero.com/jquery/)
