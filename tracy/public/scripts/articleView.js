@@ -4,9 +4,45 @@ var app = app || {};
 
 (function(module){
 
-module.articleView = {};
+var articleView = {};
 
-module.articleView.populateFilters = () => {
+// PUBLIC FUNCTIONS
+
+articleView.initIndexPage = () => {
+  module.Article.all.forEach(a => $('#articles').append(a.toHtml()));
+
+  populateFilters();
+  handleCategoryFilter();
+  handleAuthorFilter();
+  handleMainNav();
+  setTeasers();
+  $('pre code').each((i, block) => hljs.highlightBlock(block));
+};
+
+articleView.initNewArticlePage = () => {
+  $('.tab-content').show();
+  $('#export-field').hide();
+  $('#article-json').on('focus', function(){
+    this.select();
+  });
+
+  $('#new-form').on('change', 'input, textarea', create);
+  $('#new-form').on('submit', submit);
+};
+
+articleView.initAdminPage = () => {
+  
+  // REVIEW: We use .forEach() here because we are relying on the side-effects of the callback function: appending to the DOM. The callback is not required to return anything.
+  let adminTemplate = Handlebars.compile($('#admin-template').text());
+  module.Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(adminTemplate(stat)));
+  // REVIEW: Simply write the correct values to the page:
+  $('#blog-stats .articles').text(module.Article.all.length);
+  $('#blog-stats .words').text(module.Article.numWordsAll());
+};
+
+// PRIVATE FUNCTIONS
+
+let populateFilters = () => {
   $('article').each(function() {
     if (!$(this).hasClass('template')) {
       var val = $(this).find('address a').text();
@@ -24,7 +60,7 @@ module.articleView.populateFilters = () => {
   });
 };
 
-module.articleView.handleAuthorFilter = () => {
+let handleAuthorFilter = () => {
   $('#author-filter').on('change', function() {
     if ($(this).val()) {
       $('article').hide();
@@ -37,7 +73,7 @@ module.articleView.handleAuthorFilter = () => {
   });
 };
 
-module.articleView.handleCategoryFilter = () => {
+let handleCategoryFilter = () => {
   $('#category-filter').on('change', function() {
     if ($(this).val()) {
       $('article').hide();
@@ -50,7 +86,7 @@ module.articleView.handleCategoryFilter = () => {
   });
 };
 
-module.articleView.handleMainNav = () => {
+let handleMainNav = () => {
   $('nav').on('click', '.tab', function(e) {
     e.preventDefault();
     $('.tab-content').hide();
@@ -60,7 +96,7 @@ module.articleView.handleMainNav = () => {
   $('nav .tab:first').click();
 };
 
-module.articleView.setTeasers = () => {
+let setTeasers = () => {
   $('.article-body *:nth-of-type(n+2)').hide();
   $('article').on('click', 'a.read-on', function(e) {
     e.preventDefault();
@@ -77,18 +113,7 @@ module.articleView.setTeasers = () => {
   });
 };
 
-module.articleView.initNewArticlePage = () => {
-  $('.tab-content').show();
-  $('#export-field').hide();
-  $('#article-json').on('focus', function(){
-    this.select();
-  });
-
-  $('#new-form').on('change', 'input, textarea', module.articleView.create);
-  $('#new-form').on('submit', submit);
-};
-
-module.articleView.create = () => {
+let create = () => {
   var article;
   $('#articles').empty();
 
@@ -122,26 +147,5 @@ let submit = event => {
   window.location = '../';
 }
 
-module.articleView.initIndexPage = () => {
-  module.Article.all.forEach(a => $('#articles').append(a.toHtml()));
-
-  module.articleView.populateFilters();
-  module.articleView.handleCategoryFilter();
-  module.articleView.handleAuthorFilter();
-  module.articleView.handleMainNav();
-  module.articleView.setTeasers();
-  $('pre code').each((i, block) => hljs.highlightBlock(block));
-};
-
-module.articleView.initAdminPage = () => {
-  
-  // REVIEW: We use .forEach() here because we are relying on the side-effects of the callback function: appending to the DOM. The callback is not required to return anything.
-  let adminTemplate = Handlebars.compile($('#admin-template').text());
-  console.log(module.Article.numWordsByAuthor());
-  module.Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(adminTemplate(stat)));
-  // REVIEW: Simply write the correct values to the page:
-  $('#blog-stats .articles').text(module.Article.all.length);
-  $('#blog-stats .words').text(module.Article.numWordsAll());
-};
-
+module.articleView = articleView;
 })(app);
