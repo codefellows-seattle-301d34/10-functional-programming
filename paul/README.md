@@ -32,6 +32,8 @@ This application is a blog, which communicates with a local server via Node.js a
 
 05-20-2018 12:46pm - Connection made between server and database.
 
+05-20-2018 2:42pm - Articles rendering to DOM.
+
 ## Credits and Collaborations
 
 * Oscar Otero - [JQuery Quick API Reference](https://oscarotero.com/jquery/)
