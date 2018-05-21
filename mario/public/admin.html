@@ -12,7 +12,7 @@
     <link rel="icon" type="image/x-icon" href="https://avatars2.githubusercontent.com/u/18607604?v=3&s=200">
     <script id="admin-template" type="text/x-handlebars-template">
       <li>
-        <div>{{name}}: {{numWords}} words written</div>
+        <div><strong>{{name}}</strong>: {{numWords}} words written</div>
       </li>
     </script>
   </head>
@@ -53,7 +53,7 @@
     <script src="scripts/article.js"></script>
     <script src="scripts/articleView.js"></script>
     <script>
-      Article.fetchAll(articleView.initAdminPage);
+      app.Article.fetchAll(app.articleView.initAdminPage);
     </script>
   </body>
 </html>
