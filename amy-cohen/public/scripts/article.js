@@ -106,7 +106,7 @@ Article.prototype.updateRecord = function(callback) {
 
 //http://stackabuse.com/how-to-use-module-exports-in-node-js/
 //https://gist.github.com/stormwild/4238330
-module.exports.Article = Article;
+module.Article = Article;
 
 })(app);
 console.log(Article);
