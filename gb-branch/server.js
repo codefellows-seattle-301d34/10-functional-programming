@@ -6,7 +6,7 @@ const fs = require('fs');
 const express = require('express');
 const PORT = process.env.PORT || 3000;
 const app = express();
-const conString = 'postgres://postgres:postgresGB@localhost:5432/kilovolt';
+const conString = 'postgres://postgres:postgresGB@localhost:5432/kilovolt'
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', err => {
@@ -18,7 +18,7 @@ app.use(express.urlencoded());
 app.use(express.static('./public'));
 
 app.get('/new-article', (request, response) => response.sendFile('new.html', {root: './public'}));
-app.get('/admin', (request, response) => response.sendFile('admin.html', {root: './public'}));
+app.get('/admin', (request, response) => response.sendFil('admin.html', {root: './public'}));
 app.get('/articles', (request, response) => {
   let SQL = `
     SELECT * FROM articles
