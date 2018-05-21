@@ -1,6 +1,8 @@
 'use strict';
 var app = app || {};
 
+(function(app) {
+
 var articleView = {};
 
 articleView.populateFilters = () => {
@@ -139,5 +141,9 @@ articleView.initAdminPage = () => {
   // REVIEW: Simply write the correct values to the page:
   $('#blog-stats .articles').text(app.Article.all.length);
   $('#blog-stats .words').text(app.Article.numWordsAll());
-  
+
 };
+
+app.articleView = articleView;
+
+})(app);
