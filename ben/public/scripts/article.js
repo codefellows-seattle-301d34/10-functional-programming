@@ -7,8 +7,6 @@ var app = app || {};
     Object.keys(rawDataObj).forEach(key => this[key] = rawDataObj[key]);
   }
 
-  // Article.all = [];
-
   Article.prototype.toHtml = function() {
     var template = Handlebars.compile($('#article-template').text());
 
@@ -39,23 +37,27 @@ var app = app || {};
 
   // Hint: What property of an individual instance contains the main text of the article?
   Article.numWordsAll = () => {
-    return Article.all.map().reduce()
+    return Article.all.map(article => article.body.split(" ").length).reduce((acc, cur) => acc + cur)
   };
 
   // Hint: Make sure to return an array and avoid duplicates.
   Article.allAuthors = () => {
-    return Article.all.map().reduce();
+    return Article.all.map(article => article.author).reduce((acc, cur) => {
+      acc.includes(cur) ? null : acc.push(cur);
+      return acc;
+    },[]);
   };
 
 
-  // Article.numWordsByAuthor = () => {
-  //   return Article.allAuthors().map(author => 
-  //     return {
-  //       name:
-  //       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-  //       numWords:   
-  //     })
-  // };
+  Article.numWordsByAuthor = () => {
+    return Article.allAuthors().map(author => {
+      return {
+        name: author,
+        // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
+        numWords: Article.all.filter(article => article.author === author).map(article => article.body.split(" ").length).reduce((acc, cur) => acc + cur)
+      }
+    })
+  };
 
   Article.truncateTable = callback => {
     $.ajax({
