@@ -39,12 +39,16 @@ var app = app || {};
 
   // Hint: What property of an individual instance contains the main text of the article?
   Article.numWordsAll = () => {
-    return Article.all.map().reduce()
+    return app.Article.all.map(obj => obj.body.split(' ').length).reduce((prevAns, body) => prevAns + body);
   };
 
   // Hint: Make sure to return an array and avoid duplicates.
   Article.allAuthors = () => {
-    return Article.all.map().reduce();
+    return Article.all.map(obj => obj.author).reduce((authorName, author) => {if (!authorName.includes(author)) {
+      accumulator.push(author);
+    }
+    return authorName;
+    },[]);
   };
 
 
