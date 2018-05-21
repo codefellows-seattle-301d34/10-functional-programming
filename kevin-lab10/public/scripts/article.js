@@ -36,22 +36,27 @@ Article.fetchAll = callback => {
 };
 
 // Hint: What property of an individual instance contains the main text of the article?
+
 Article.numWordsAll = () => {
-  return Article.all.map().reduce()
+  Article.all.map(article => article.body.match(/\b\w+/g).length).reduce((a, b) => a +b);
 };
 
 // Hint: Make sure to return an array and avoid duplicates.
 Article.allAuthors = () => {
-  return Article.all.map().reduce();
+  return Article.all.map(article => article.author).reduce((names, name) => {
+      if (names.indexOf(name) === -1) names.push(name);
+      return names;
+    }, []);
 };
 
 
 Article.numWordsByAuthor = () => {
   return Article.allAuthors().map(author => 
-    return {
-      name:
+    return {{
+      name: author, 
       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-      numWords:   
+      numWords: Article.all.filter(a => a.author === author).map(a => a.body.match(/\b\w+/g).length).reduce((a, b) => a + b)
+    }
     })
 };
 
