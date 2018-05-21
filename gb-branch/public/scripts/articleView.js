@@ -136,6 +136,7 @@ var app = app || {};
     // REVIEW: Simply write the correct values to the page:
     $('#blog-stats .articles').text(app.Article.all.length);
     console.log(app.Article.all);
+    console.log('test');
     $('#blog-stats .words').text(app.Article.numWordsAll());
   };
 
