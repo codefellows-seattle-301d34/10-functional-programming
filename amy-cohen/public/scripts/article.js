@@ -27,6 +27,7 @@ Article.loadAll = articleData => {
   /* OLD forEach():
   articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
   */
+ articleData.map(articleObject => new Article(articleObject));
 
 };
 
@@ -50,7 +51,8 @@ Article.allAuthors = () => {
 
 
 Article.numWordsByAuthor = () => {
-  return Article.allAuthors().map(author => 
+  return Article.allAuthors.map(author => 
+    console.log(`Is this is being hit?`);
     return {
       name: Article.author,
       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
