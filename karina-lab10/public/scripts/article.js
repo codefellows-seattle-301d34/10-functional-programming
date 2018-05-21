@@ -42,12 +42,13 @@ Article.fetchAll = callback => {
 
 // Hint: What property of an individual instance contains the main text of the article?
 Article.numWordsAll = () => {
-  return Article.all.map(Article => Article.length).reduce(Article.body)
+  var resultado = arr.reduce(funcion[, valorInicial]);
+  return Article.all.map(Article => Article.length).reduce(function[, Article.body])
 };
 
 // Hint: Make sure to return an array and avoid duplicates.
 Article.allAuthors = () => {
-  return Article.all.map().reduce();
+  return Article.all.map(Article => Article.author).reduce();
 };
 
 
