@@ -46,6 +46,8 @@ This application is a blog, which communicates with a local server via Node.js a
 
 05-20-2018 9:50pm - Additional work performed to try getting handlebars template to append elements to the DOM.
 
+05-20-2018 11:50pm - More work performed, but still nothing appending to DOM.
+
 ## Credits and Collaborations
 
 * Oscar Otero - [JQuery Quick API Reference](https://oscarotero.com/jquery/)
