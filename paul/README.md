@@ -1,7 +1,7 @@
 # Kilovolt Blog
 
 **Author**: Paul Ritzman
-**Version**: 1.0.0
+**Version**: 2.0.0
 
 ## Overview
 This application is a blog, which communicates with a local server via Node.js and a backend SQL database.
@@ -42,7 +42,9 @@ This application is a blog, which communicates with a local server via Node.js a
 
 05-20-2018 6:12pm - Completed allAuthors function.
 
-05-20-2018 6:12pm - Completed numWordsByAuthor function.
+05-20-2018 7:46pm - Completed numWordsByAuthor function.
+
+05-20-2018 9:50pm - Additional work performed to try getting handlebars template to append elements to the DOM.
 
 ## Credits and Collaborations
 
