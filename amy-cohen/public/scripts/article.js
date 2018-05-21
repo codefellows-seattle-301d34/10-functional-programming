@@ -27,6 +27,7 @@ Article.loadAll = articleData => {
   /* OLD forEach():
   articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
   */
+ articleData.map(articleObject => new Article(articleObject));
 
 };
 
@@ -50,7 +51,8 @@ Article.allAuthors = () => {
 
 
 Article.numWordsByAuthor = () => {
-  return Article.allAuthors().map(author => 
+  return Article.allAuthors.map(author => 
+    console.log(`Is this is being hit?`);
     return {
       name: Article.author,
       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
@@ -104,7 +106,7 @@ Article.prototype.updateRecord = function(callback) {
 
 //http://stackabuse.com/how-to-use-module-exports-in-node-js/
 //https://gist.github.com/stormwild/4238330
-module.exports.Article = Article;
+module.Article = Article;
 
 })(app);
 console.log(Article);
