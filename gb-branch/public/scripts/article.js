@@ -45,21 +45,25 @@ var app = app || {};
   // Hint: Make sure to return an array and avoid duplicates.
   Article.allAuthors = () => {
     return Article.all.map(obj => obj.author).reduce((authorName, author) => {if (!authorName.includes(author)) {
-      accumulator.push(author);
+      authorName.push(author);
     }
     return authorName;
     },[]);
   };
 
 
-  // Article.numWordsByAuthor = () => {
-  //   return Article.allAuthors().map(author =>
-  //     return {
-  //       name:
-  //       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-  //       numWords:
-  //     })
-  // };
+  Article.numWordsByAuthor = () => {
+    return Article.allAuthors().map(author => {
+      return {
+        name: author,
+        // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
+        numWords: Article.all.filter(a => a.author === author)
+          .map(a => a.body.split(' ').length)
+          .reduce((acc, current) => acc + current)
+      }
+    })
+  };
+
 
   Article.truncateTable = callback => {
     $.ajax({
