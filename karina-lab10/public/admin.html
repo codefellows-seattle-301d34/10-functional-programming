@@ -35,9 +35,9 @@
         <dt>Total words:</dt> <dd class="words"></dd>
         <h2>Author Stats</h2>
         <p><em>Details on who is writing, and how much writing they are doing...</em></p>
+        <script id="article-template" type="text/x-handlebars-template">
         <ul class="author-stats">
-        </ul>
-      </section>
+        </ul></script>
     </main>
     <footer>
       &copy; 2018 Code Fellows | Static Blog | Happy Ipsum!
@@ -48,7 +48,7 @@
     <script src="scripts/article.js"></script>
     <script src="scripts/articleView.js"></script>
     <script>
-      Article.fetchAll();
+      Article.fetchAll(app.articleView.initAdminPage);
     </script>
   </body>
 </html>
