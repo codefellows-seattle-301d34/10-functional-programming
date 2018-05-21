@@ -12,7 +12,6 @@
     <link rel="icon" type="image/x-icon" href="https://avatars2.githubusercontent.com/u/18607604?v=3&s=200">
     <script id="article-template" type="text/x-handlebars-template">
       <li>{{author}}: {{totalWords}} words written</li>
-      
     </script>
   </head>
   <body>
@@ -53,8 +52,8 @@
     <script src="scripts/articleView.js"></script>
     <script>
       app.Article.fetchAll();
-      app.articleView.initIndexPage();
       app.articleView.initAdminPage();
+      app.articleView.initIndexPage();
     </script>
   </body>
 </html>

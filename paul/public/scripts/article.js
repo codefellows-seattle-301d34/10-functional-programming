@@ -9,13 +9,13 @@ var app = app || {};
 
   Article.all = [];
 
-  Article.prototype.toHtml = function() {
-    var template = Handlebars.compile($('#article-template').text());
+  Article.prototype.toHtml = function(stat) {
+    var template = Handlebars.compile($('#article-template').html());
 
     this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
     this.publishStatus = this.publishedOn ? `published ${this.daysAgo} days ago` : '(draft)';
     this.body = marked(this.body);
-    return template(this);
+    return template(stat);
   };
 
   Article.loadAll = articleData => {
@@ -31,13 +31,13 @@ var app = app || {};
     $.get('/articles')
       .then(results => {
         Article.loadAll(results);
-        callback();
+        if(callback) callback();
       })
   };
 
   // Hint: What property of an individual instance contains the main text of the article?
   Article.numWordsAll = () => {
-    return Article.all.map(obj => obj.body.split(/[// ]+/).length).reduce((accum, currentVal) => accum + currentVal);
+    return Article.all.map(obj => obj.body.split(/[// ]+/).length).reduce((accum, currentVal) => accum + currentVal, 0);
   };
 
   // Hint: Make sure to return an array and avoid duplicates.
