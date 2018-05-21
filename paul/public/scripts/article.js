@@ -51,16 +51,17 @@ var app = app || {};
     }, []);
   };
 
-  // ***** COMMENTED OUT FUNCTION BELOW IN ORDER TO TEST OTHER FUNCTIONALITY - BE SURE TO UNCOMMENT *****
-
-  // Article.numWordsByAuthor = () => {
-  //   return Article.allAuthors().map(author =>
-  //     return {
-  //       name:
-  //       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-  //       numWords:
-  //     })
-  // };
+  Article.numWordsByAuthor = () => {
+    return Article.allAuthors().map(author => {
+      return {
+        name: author,
+        // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
+        numWords: Article.all.filter(elem => elem.author === author)
+          .map(elem => elem.body.split(/[// ]+/).length)
+          .reduce((accum, currentVal) => accum + currentVal)
+      }
+    })
+  };
 
   Article.truncateTable = callback => {
     $.ajax({

@@ -40,6 +40,10 @@ This application is a blog, which communicates with a local server via Node.js a
 
 05-20-2018 3:56pm - Adjusted numWordsAll function to count words instead of characters.
 
+05-20-2018 6:12pm - Completed allAuthors function.
+
+05-20-2018 6:12pm - Completed numWordsByAuthor function.
+
 ## Credits and Collaborations
 
 * Oscar Otero - [JQuery Quick API Reference](https://oscarotero.com/jquery/)
