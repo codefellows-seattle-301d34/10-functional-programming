@@ -1,21 +1,17 @@
 'use strict';
 var app = app || {};
 
+//is this how? Nothing else is working and there is so much online that shows different options. Hoping when you said wrap it that you meant the whole thing.
+(function (module) {
 
-//because of all the app.Article(s) used, this needs to be an IIFE, but can rawDataObj be the module since that is just potato?  Also, wouldn't ALL Article references need to be app.Article then so it can be revealed correctly?
 function Article(rawDataObj) {
   // REVIEW: In Lab 8, we explored a lot of new functionality going on here. Let's re-examine the concept of context. Normally, "this" inside of a constructor function refers to the newly instantiated object. However, in the function we're passing to forEach, "this" would normally refer to "undefined" in strict mode. As a result, we had to pass a second argument to forEach to make sure our "this" was still referring to our instantiated object. One of the primary purposes of lexical arrow functions, besides cleaning up syntax to use fewer lines of code, is to also preserve context. That means that when you declare a function using lexical arrows, "this" inside the function will still be the same "this" as it was outside the function. As a result, we no longer have to pass in the optional "this" argument to forEach!
   Object.keys(rawDataObj).forEach(key => this[key] = rawDataObj[key]);
-}(app);
+};
 
-//http://stackabuse.com/how-to-use-module-exports-in-node-js/
-module.exports.Article = Article;
-console.log(module.exports);
+Article.all = [];
 
-//if Article above is wrapped as an IIFE, then this will need to be called app.Article.all, right?????
-app.Article.all = [];
-
-app.Article.prototype.toHtml = function() {
+Article.prototype.toHtml = function() {
   var template = Handlebars.compile($('#article-template').text());
 
   this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
@@ -25,7 +21,7 @@ app.Article.prototype.toHtml = function() {
   return template(this);
 };
 
-app.Article.loadAll = articleData => {
+Article.loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
   /* OLD forEach():
@@ -34,35 +30,35 @@ app.Article.loadAll = articleData => {
 
 };
 
-app.Article.fetchAll = callback => {
+Article.fetchAll = callback => {
   $.get('/articles')
     .then(results => {
-      app.Article.loadAll(results);
+      Article.loadAll(results);
       callback();
     })
 };
 
 // Hint: What property of an individual instance contains the main text of the article?
-app.Article.numWordsAll = () => {
-  return app.Article.body.map().reduce()
+Article.numWordsAll = () => {
+  return Article.body.map().reduce()
 };
 
 // Hint: Make sure to return an array and avoid duplicates.
-app.Article.allAuthors = () => {
-  return app.Article.all.map().reduce();
+Article.allAuthors = () => {
+  return Article.all.map().reduce();
 };
 
 
-app.Article.numWordsByAuthor = () => {
-  return app.Article.allAuthors().map(author => 
+Article.numWordsByAuthor = () => {
+  return Article.allAuthors().map(author => 
     return {
-      name: app.Article.author,
+      name: Article.author,
       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-      numWords: app.Article.all.map().reduce(),
+      numWords: Article.all.map().reduce(),
     });
 };
 
-app.Article.truncateTable = callback => {
+Article.truncateTable = callback => {
   $.ajax({
     url: '/articles',
     method: 'DELETE',
@@ -72,14 +68,14 @@ app.Article.truncateTable = callback => {
     .then(callback);
 };
 
-app.Article.prototype.insertRecord = function(callback) {
+Article.prototype.insertRecord = function(callback) {
   // REVIEW: Why can't we use an arrow function here for .insertRecord()?
   $.post('/articles', {author: this.author, authorUrl: this.authorUrl, body: this.body, category: this.category, publishedOn: this.publishedOn, title: this.title})
     .then(console.log)
     .then(callback);
 };
 
-app.Article.prototype.deleteRecord = function(callback) {
+Article.prototype.deleteRecord = function(callback) {
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'DELETE'
@@ -88,7 +84,7 @@ app.Article.prototype.deleteRecord = function(callback) {
     .then(callback);
 };
 
-app.Article.prototype.updateRecord = function(callback) {
+Article.prototype.updateRecord = function(callback) {
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'PUT',
@@ -105,3 +101,10 @@ app.Article.prototype.updateRecord = function(callback) {
     .then(console.log)
     .then(callback);
 };
+
+//http://stackabuse.com/how-to-use-module-exports-in-node-js/
+//https://gist.github.com/stormwild/4238330
+module.exports.Article = Article;
+
+})(app);
+console.log(Article);
