@@ -39,17 +39,21 @@ Article.fetchAll = callback => {
 // Hint: What property of an individual instance contains the main text of the article?
 Article.numWordsAll = () => {
   return Article.all.map((element) => element.body.split(' ').length).reduce((prevAns, currentLen) => prevAns + currentLen);
+  // element.body.match(/\b\w+/g).length the regex way
 };
 
 // Hint: Make sure to return an array and avoid duplicates.
 Article.allAuthors = () => {
   return Article.all.map((element) => element.author).sort().reduce((prevAns, current) => {
     const length = prevAns.length
-    if (length === 0 || prevAns[length - 1] !== current) {
-      prevAns.push(current);
-    }
+    if (length === 0 || prevAns[length - 1] !== current) prevAns.push(current);
     return prevAns;
   }, []);
+  // return Article.all.map(article => article.author)
+  //   .reduce((names, name) => {
+  //     if (names.indexOf(name) === -1) names.push(name);
+  //     return names
+  // }, [])
 };
 
 
@@ -59,13 +63,9 @@ Article.numWordsByAuthor = () => {
       name: author,
       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
       numWords:
-      [
-        author.forEach((authorName) => {
-          return Article.all.filter((element) => element.author === authorName)
-            .map((element) => element.body.split(' ').length)
-            .reduce((prevAns, currentLen) => prevAns + currentLen)
-        })
-      ]
+        Article.all.filter((element) => element.author === author)
+          .map((element) => element.body.split(' ').length)
+          .reduce((prevAns, currentLen) => prevAns + currentLen)
       
       // Zombie Code for reference to ask about later.
       // Article.all.map((element) => {
