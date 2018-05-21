@@ -43,7 +43,12 @@ var app = app || {};
 
   // Hint: Make sure to return an array and avoid duplicates.
   Article.allAuthors = () => {
-    return Article.all.map().reduce();
+    return Article.all.map(obj => obj.author).reduce((accum, current) => {
+      if(!accum.includes(current)) {
+        accum.push(current);
+      }
+      return accum;
+    }, []);
   };
 
   // ***** COMMENTED OUT FUNCTION BELOW IN ORDER TO TEST OTHER FUNCTIONALITY - BE SURE TO UNCOMMENT *****
