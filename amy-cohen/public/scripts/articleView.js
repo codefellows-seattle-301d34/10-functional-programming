@@ -148,3 +148,4 @@ console.log(articleView);
 module.articleView = articleView;
 
 })(app);
+console.log(app);

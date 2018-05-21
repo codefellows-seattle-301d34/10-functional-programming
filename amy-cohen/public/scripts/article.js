@@ -32,6 +32,8 @@ Article.loadAll = articleData => {
 };
 
 Article.fetchAll = callback => {
+  console.log(`Is Article.fetchAll this is being hit?`);
+
   $.get('/articles')
     .then(results => {
       Article.loadAll(results);
@@ -41,6 +43,7 @@ Article.fetchAll = callback => {
 
 // Hint: What property of an individual instance contains the main text of the article?
 Article.numWordsAll = () => {
+  console.log(Article.body.map().reduce());
   return Article.body.map().reduce()
 };
 
@@ -51,12 +54,14 @@ Article.allAuthors = () => {
 
 
 Article.numWordsByAuthor = () => {
-  return Article.allAuthors.map(author => 
-    console.log(`Is this is being hit?`);
+  console.log(Article.all.filter(a, a.author === a).map(body.split(' ').length).reduce((acc, curr) => acc += curr, 0));
+  return Article.allAuthors.map(author => {
+    console.log(`Is this is being hit?`); 
     return {
       name: Article.author,
       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-      numWords: Article.all.map().reduce(),
+      numWords: Article.all.filter(a, a.author === a).map(body.split(' ').length).reduce((acc, curr) => acc += curr, 0),
+    }
     });
 };
 
@@ -108,5 +113,6 @@ Article.prototype.updateRecord = function(callback) {
 //https://gist.github.com/stormwild/4238330
 module.Article = Article;
 
-})(app);
 console.log(Article);
+})(app);
+console.log(app);
