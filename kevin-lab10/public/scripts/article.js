@@ -1,15 +1,15 @@
 'use strict';
 var app = app || {};
 
-(function(module) {
-  module.Article = function (rawDataObj) {
+(function (module) {
+  function Article(rawDataObj) {
     // REVIEW: In Lab 8, we explored a lot of new functionality going on here. Let's re-examine the concept of context. Normally, "this" inside of a constructor function refers to the newly instantiated object. However, in the function we're passing to forEach, "this" would normally refer to "undefined" in strict mode. As a result, we had to pass a second argument to forEach to make sure our "this" was still referring to our instantiated object. One of the primary purposes of lexical arrow functions, besides cleaning up syntax to use fewer lines of code, is to also preserve context. That means that when you declare a function using lexical arrows, "this" inside the function will still be the same "this" as it was outside the function. As a result, we no longer have to pass in the optional "this" argument to forEach!
     Object.keys(rawDataObj).forEach(key => this[key] = rawDataObj[key]);
   }
 
-  module.Article.all = [];
+  Article.all = [];
 
-  module.Article.prototype.toHtml = function () {
+  Article.prototype.toHtml = function () {
     var template = Handlebars.compile($('#article-template').text());
 
     this.daysAgo = parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000);
@@ -20,56 +20,67 @@ var app = app || {};
   };
 
 
-  module.Article.prototype.toHtml2 = function () {
-    var template = Handlebars.compile($('#author-template').text());
+  // Article.prototype.toHtml2 = function () {
+  //   var template = Handlebars.compile($('#author-template').text());
 
-    return template(this);
-  };
+  //   return template(this);
+  // };
 
-  module.Article.loadAll = articleData => {
+  Article.loadAll = articleData => {
     articleData.sort((a, b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
     /* OLD forEach():
     articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
     */
-
+    Article.all = articleData.map(ele => new Article(ele));
   };
 
-  module.Article.fetchAll = callback => {
+  Article.fetchAll = callback => {
     $.get('/articles')
       .then(results => {
-        module.Article.loadAll(results);
+        Article.loadAll(results);
         callback();
       })
   };
 
   // Hint: What property of an individual instance contains the main text of the article?
 
-  module.Article.numWordsAll = () => {
-    module.Article.all.map(article => article.body.match(/\b\w+/g).length).reduce((a, b) => a + b);
+  Article.numWordsAll = () => {
+    Article.all.map(article => article.body.match(/\b\w+/g).length).reduce((a, b) => a + b);
   };
 
   // Hint: Make sure to return an array and avoid duplicates.
-  module.Article.allAuthors = () => {
-    return module.Article.all.map(article => article.author).reduce((names, name) => {
+  Article.allAuthors = () => {
+    return Article.all.map(article => article.author).reduce((names, name) => {
       if (names.indexOf(name) === -1) names.push(name);
       return names;
     }, []);
   };
 
 
-  module.Article.numWordsByAuthor = () => {
-    return module.Article.allAuthors().map(author => {
-      let numWords = module.Article.all.filter(article => article.author === author).map(article => article.body.split(' ').length).reduce((acc, cur) => acc + cur)
+  Article.numWordsByAuthor = () => {
+    return Article.allAuthors().map(author => {
       return {
         name: author,
-        numWords: numWords,
-        weNeedThatS: numWords === 1 ? '' : 's',
-      };
-    });
+        numWords: Article.all.filter(function (objectElement) {
+
+          return objectElement.author === author;
+        })
+          .map(a => a.body.match(/\b\w+/g).length)
+          .reduce((a, b) => a + b)
+      }
+    })
   };
 
-  module.Article.truncateTable = callback => {
+  Article.stats = () => {
+    return {
+      numArticles: Article.all.length,
+      numWords: Article.numWordsAll(),
+      Authors: Article.allAuthors(),
+    }
+  };
+
+  Article.truncateTable = callback => {
     $.ajax({
       url: '/articles',
       method: 'DELETE',
@@ -95,7 +106,7 @@ var app = app || {};
       .then(callback);
   };
 
-  Article.prototype.updateRecord = function (callback) {
+  Article.prototype.updateRecord = function(callback) {
     $.ajax({
       url: `/articles/${this.article_id}`,
       method: 'PUT',
