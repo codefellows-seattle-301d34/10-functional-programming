@@ -33,7 +33,7 @@ var app = app || {};
     $.get('/articles')
       .then(results => {
         Article.loadAll(results);
-        callback();
+        if(callback) callback();
       })
   };
 
