@@ -6,7 +6,7 @@ const fs = require('fs');
 const express = require('express');
 const PORT = process.env.PORT || 3000;
 const app = express();
-const conString = '';
+const conString = 'postgres://localhost:5432';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', err => {
@@ -17,15 +17,15 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static('./public'));
 
-app.get('/new-article', (request, response) => response.sendFile('new.html', {root: './public'}));
-app.get('/admin', (request, response) => response.sendFile('admin.html', {root: './public'}));
+app.get('/new-article', (request, response) => response.sendFile('new.html', { root: './public' }));
+app.get('/admin', (request, response) => response.sendFile('admin.html', { root: './public' }));
 app.get('/articles', (request, response) => {
   let SQL = `
     SELECT * FROM articles
     INNER JOIN authors
       ON articles.author_id=authors.author_id;
   `;
-  client.query( SQL )
+  client.query(SQL)
     .then(result => response.send(result.rows))
     .catch(console.error);
 });
@@ -33,8 +33,8 @@ app.get('/articles', (request, response) => {
 app.post('/articles', (request, response) => {
   let SQL = 'INSERT INTO authors(author, "authorUrl") VALUES($1, $2) ON CONFLICT DO NOTHING';
   let values = [request.body.author, request.body.authorUrl];
-  client.query( SQL, values,
-    function(err) {
+  client.query(SQL, values,
+    function (err) {
       if (err) console.error(err)
       queryTwo()
     }
@@ -43,8 +43,8 @@ app.post('/articles', (request, response) => {
   function queryTwo() {
     let SQL = `SELECT author_id FROM authors WHERE author=$1`;
     let values = [request.body.author];
-    client.query( SQL, values,
-      function(err, result) {
+    client.query(SQL, values,
+      function (err, result) {
         if (err) console.error(err)
         queryThree(result.rows[0].author_id)
       }
@@ -64,8 +64,8 @@ app.post('/articles', (request, response) => {
       request.body.body
     ];
 
-    client.query( SQL, values,
-      function(err) {
+    client.query(SQL, values,
+      function (err) {
         if (err) console.error(err);
         response.send('insert complete');
       }
@@ -80,7 +80,7 @@ app.put('/articles/:id', (request, response) => {
     WHERE author_id=$3
   `;
   let values = [request.body.author, request.body.authorUrl, request.body.author_id];
-  client.query( SQL, values )
+  client.query(SQL, values)
     .then(() => {
       let SQL = `
         UPDATE articles
@@ -95,7 +95,7 @@ app.put('/articles/:id', (request, response) => {
         request.body.body,
         request.params.id
       ];
-      client.query( SQL, values );
+      client.query(SQL, values);
     })
     .then(() => response.send('Update complete'))
     .catch(console.error);
@@ -104,14 +104,14 @@ app.put('/articles/:id', (request, response) => {
 app.delete('/articles/:id', (request, response) => {
   let SQL = `DELETE FROM articles WHERE article_id=$1;`;
   let values = [request.params.id];
-  client.query( SQL, values )
+  client.query(SQL, values)
     .then(() => response.send('Delete complete'))
     .catch(console.error);
 });
 
 app.delete('/articles', (request, response) => {
   let SQL = 'DELETE FROM articles';
-  client.query( SQL )
+  client.query(SQL)
     .then(() => response.send('Delete complete'))
     .catch(console.error);
 });
@@ -128,7 +128,7 @@ function loadAuthors() {
     JSON.parse(fd).forEach(ele => {
       let SQL = 'INSERT INTO authors(author, "authorUrl") VALUES($1, $2) ON CONFLICT DO NOTHING';
       let values = [ele.author, ele.authorUrl];
-      client.query( SQL, values )
+      client.query(SQL, values)
         .catch(console.error);
     })
   })
@@ -136,9 +136,9 @@ function loadAuthors() {
 
 function loadArticles() {
   let SQL = 'SELECT COUNT(*) FROM articles';
-  client.query( SQL )
+  client.query(SQL)
     .then(result => {
-      if(!parseInt(result.rows[0].count)) {
+      if (!parseInt(result.rows[0].count)) {
         fs.readFile('./public/data/hackerIpsum.json', 'utf8', (err, fd) => {
           JSON.parse(fd).forEach(ele => {
             let SQL = `
@@ -148,7 +148,7 @@ function loadArticles() {
               WHERE author=$5;
             `;
             let values = [ele.title, ele.category, ele.publishedOn, ele.body, ele.author];
-            client.query( SQL, values )
+            client.query(SQL, values)
               .catch(console.error);
           })
         })
