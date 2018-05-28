@@ -24,15 +24,14 @@ Article.prototype.toHtml = function() {
 Article.loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
-  /* OLD forEach():
-  articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
-  */
- articleData.map(articleObject => new Article(articleObject));
+  // OLD forEach():
+  // articleData.forEach(articleObject => Article.all.push(new Article(articleObject)));
+  
+ Article.all = articleData.map(articleObject => new Article(articleObject));
 
 };
 
 Article.fetchAll = callback => {
-  console.log(`Is Article.fetchAll this is being hit?`);
 
   $.get('/articles')
     .then(results => {
@@ -43,25 +42,28 @@ Article.fetchAll = callback => {
 
 // Hint: What property of an individual instance contains the main text of the article?
 Article.numWordsAll = () => {
-  console.log(Article.body.map().reduce());
-  return Article.body.map().reduce()
+  return Article.all.map(article => article.body.split(' ').length).reduce((a, b) => a + b, 0);
 };
 
 // Hint: Make sure to return an array and avoid duplicates.
 Article.allAuthors = () => {
-  return Article.all.map().reduce();
+  return Article.all.map(article => article.author).reduce((names, name) => {
+    if (names.includes(name)) names.push(name);
+    return names;
+  }, []);
+  console.log(names);
 };
 
 
 Article.numWordsByAuthor = () => {
-  console.log(Article.all.filter(a, a.author === a).map(body.split(' ').length).reduce((acc, curr) => acc += curr, 0));
-  return Article.allAuthors.map(author => {
-    console.log(`Is this is being hit?`); 
+
+  return Article.allAuthors().map(author => {
     return {
-      name: Article.author,
+      name: author,
       // Hint: you will need to chain some combination of .filter(), .map(), and .reduce() to get the value of the numWords property
-      numWords: Article.all.filter(a, a.author === a).map(body.split(' ').length).reduce((acc, curr) => acc += curr, 0),
+      numWords: Article.all.map(a => a.body.split(' ').length).reduce((a, b) => a + b, 0),
     }
+    console.log(numWords);
     });
 };
 
@@ -113,6 +115,4 @@ Article.prototype.updateRecord = function(callback) {
 //https://gist.github.com/stormwild/4238330
 module.Article = Article;
 
-console.log(Article);
 })(app);
-console.log(app);

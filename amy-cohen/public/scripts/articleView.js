@@ -121,6 +121,19 @@ articleView.submit = event => {
   window.location = '../';
 }
 
+
+articleView.initAdminPage = () => {
+  console.log('is this adminpage being hit?');
+  var template = Handlebars.compile($('#admin-template').text());
+  
+  // REVIEW: We use .forEach() here because we are relying on the side-effects of the callback function: appending to the DOM. The callback is not required to return anything.
+  app.Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(template(stat)));
+   
+  // REVIEW: Simply write the correct values to the page:
+  $('#blog-stats .articles').text(app.Article.all.length);
+  $('#blog-stats .words').text(app.Article.numWordsAll());
+};
+
 articleView.initIndexPage = () => {
   app.Article.all.forEach(a => $('#articles').append(a.toHtml()));
 
@@ -130,18 +143,6 @@ articleView.initIndexPage = () => {
   articleView.handleMainNav();
   articleView.setTeasers();
   $('pre code').each((i, block) => hljs.highlightBlock(block));
-};
-
-articleView.initAdminPage = () => {
-  var template = Handlebars.compile($('#article-template').text());
-
-  // REVIEW: We use .forEach() here because we are relying on the side-effects of the callback function: appending to the DOM. The callback is not required to return anything.
-  app.Article.numWordsByAuthor().forEach(stat => $('.author-stats').append(template(stat)));
-
-  // REVIEW: Simply write the correct values to the page:
-  $('#blog-stats .articles').text(app.Article.all.length);
-  $('#blog-stats .words').text(app.Article.numWordsAll());
-
 };
 
 console.log(articleView);
